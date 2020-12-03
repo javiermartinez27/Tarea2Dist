@@ -5,10 +5,14 @@ message Message {
   bytes body = 1;
   string respuesta = 2;
 }
+message Message2{
+  string mensaje = 1;
+}
 
 service ChatService {
   rpc RecibirArchivo(Message) returns (Message) {}
   rpc EnviarArchivo(Message) returns (Message) {}
   rpc PedirLibros(Message) returns (Message) {}
   rpc PedirArchivo(Message) returns (Message) {}
+  rpc ProponerPropuesta(Message2) returns (Message2) {}
 }

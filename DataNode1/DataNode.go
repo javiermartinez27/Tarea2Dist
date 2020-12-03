@@ -10,9 +10,11 @@ import (
 	"google.golang.org/grpc"
 )
 
+var propuesta string
+
 func escuchar() {
 	puerto := 9000
-	fmt.Println("NameNode escuchando en el puerto " + strconv.Itoa(puerto))
+	fmt.Println("DataNode escuchando en el puerto " + strconv.Itoa(puerto))
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", puerto))
 	if err != nil {
@@ -31,6 +33,7 @@ func escuchar() {
 }
 
 func main() {
+
 	escuchar()
 
 }

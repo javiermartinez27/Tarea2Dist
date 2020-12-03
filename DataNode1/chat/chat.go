@@ -2,6 +2,7 @@ package chat
 
 import (
 	"bufio"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -120,7 +121,7 @@ type Server struct {
 func (s *Server) RecibirArchivo(ctx context.Context, in *Message) (*Message, error) { //cuando el uploader envia un archivo
 	log.Printf("Recibido archivo desde el cliente: %s", in.Respuesta)
 	fileWrite(in.Body, in.Respuesta)
-	return &Message{Respuesta: "Recbido"}, nil
+	return &Message{Respuesta: "Recibido"}, nil
 }
 
 func (s *Server) EnviarArchivo(ctx context.Context, in *Message) (*Message, error) { //cuando el downloader pide un archivo
@@ -146,4 +147,17 @@ func (s *Server) PedirArchivo(ctx context.Context, in *Message) (*Message, error
 	log.Printf("Cliente solicita archivo: %s", in.Respuesta)
 	fileWrite(in.Body, in.Respuesta)
 	return &Message{Respuesta: "Recbido"}, nil
+}
+
+func (s *Server) ProponerPropuesta(ctx context.Context, in *Message2) (*Message2, error) {
+	prop := in.Mensaje
+	if prop == "1" {
+		fmt.Println("Propuesta Exclusion mutua centralizada  recibida")
+		return &Message2{Mensaje: "Propuesta Recibidaaaaa"}, nil
+
+		log.Printf("Propuesta Aceptada por NameNode")
+	} else {
+		fmt.Println("Propuesta Exclusion mutua distribuida recibida")
+	}
+	return &Message2{Mensaje: "Propuesta Recibida"}, nil
 }

@@ -13,6 +13,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+var propuesta string
+
 func sender() {
 	dirname := "aux"
 
@@ -46,7 +48,7 @@ func sender() {
 
 func sendFile(chunk []byte, nombre string) {
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(":9000", grpc.WithInsecure())
+	conn, err := grpc.Dial("10.10.28.154:9000", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
@@ -54,11 +56,29 @@ func sendFile(chunk []byte, nombre string) {
 
 	c := chat.NewChatServiceClient(conn)
 
-	response, err := c.SayHello(context.Background(), &chat.Message{Body: chunk, Respuesta: nombre})
+	response, err := c.RecibirArchivo(context.Background(), &chat.Message{Body: chunk, Respuesta: nombre})
 	if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
+		log.Fatalf("Error when calling RecibirArchivo: %s", err)
 	}
 	log.Printf("Response from server: %s", response.Respuesta)
+
+}
+
+func sendPropuesta(propuesta string) {
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("10.10.28.154:9000", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+
+	c := chat.NewChatServiceClient(conn)
+
+	resp, err := c.ProponerPropuesta(context.Background(), &chat.Message2{Mensaje: propuesta})
+	if err != nil {
+		log.Fatalf("Error when calling ProponerPropuesta: %s", err)
+	}
+	log.Printf("Response from server: %s", resp.Mensaje)
 }
 
 func readFiles() string {
@@ -105,7 +125,7 @@ func separar(libro string) {
 
 	fileInfo, _ := file.Stat()
 	var fileSize int64 = fileInfo.Size()
-	const fileChunk = 0.25 * (1 << 20) // 250 kB
+	const fileChunk = 250000 // 250 kB
 
 	// calculate total number of parts the file will be chunked into
 
@@ -136,4 +156,8 @@ func main() {
 	libro := readFiles()
 	separar(libro)
 	sender()
+	fmt.Println("Ahora seleccione el tipo de propuesta:\n1) Exclusion mutua centralizada\n2) Exclusion mutua distribuida")
+	fmt.Scanf("%s", &propuesta)
+	sendPropuesta(propuesta)
+
 }
