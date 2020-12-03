@@ -8,7 +8,7 @@
 # Cómo usarlo
 
 - Primero, iniciar el NameNode y los DataNode en sus máquinas correspondientes
-- Luego, en cualquier máquina (y cualquier carpeta) correr el archivo 'downloader.go' y el archivo "uploader.go" segun se requiera.
+- Luego, en cualquier máquina (y cualquier carpeta) correr el archivo 'downloader.go' y el archivo "uploader.go" desde la carpeta NameNode segun se requiera.
 
 Nota 1: se incluyen archivos de ejemplo en cada máquina, además del log.txt en la carpeta NameNode mostrando cómo están distribuidos estos archivos.
 
